@@ -1,0 +1,32 @@
+fileVersion: 1
+id: 22265234-8a3e-4ba1-bd5b-91961b93577e
+name: NEW_NODE
+operation:
+  config: {}
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET
+  materializationType: table
+  metadata:
+    appliedNodeTests: []
+    columns: []
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases: {}
+        customSQL:
+          customSQL: ""
+        dependencies: []
+        join:
+          joinCondition: ""
+        name: NEW_NODE
+        noLinkRefs: []
+  name: NEW_NODE
+  overrideSQL: false
+  schema: ""
+  sqlType: "362"
+  type: sql
+  version: 1
+type: Node

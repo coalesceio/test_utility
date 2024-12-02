@@ -1,0 +1,431 @@
+fileVersion: 1
+id: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+name: STG_ACCOUNT_HISTORY1
+operation:
+  config:
+    insertStrategy: INSERT
+    postSQL: ""
+    preSQL: ""
+    testsEnabled: true
+    truncateBefore: true
+  database: ""
+  deployEnabled: true
+  description: ""
+  isMultisource: false
+  locationName: TARGET
+  materializationType: table
+  metadata:
+    appliedNodeTests:
+      - continueOnFailure: true
+        description: ""
+        name: countWithOtherTable
+        runOrder: Before
+        templateString: "{{expect_table_row_count_to_equal_other_table_times_factor('{{this}}','DBT_EXPECTATIONS.TARGET.STG_ACCOUNT_HISTORY',filterCondition_t1 = '\"agent_group_id\" is null',filterCondition_t2 = '\"agent_group_id\" is null', factor ='1')}}"
+      - continueOnFailure: true
+        description: ""
+        name: Test
+        runOrder: Before
+        templateString: "{{expect_column_to_exist('{{this}}', 'testc')}}"
+    columns:
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: fab05746-81f9-4733-b423-3d4ca4006835
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: account_id
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: dd1768ae-e9a8-4088-83f2-e08e7c0ea16b
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 7aabd48f-1c92-4cc5-bccc-617e92aaf349
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: last_updated_at
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: bf5d1f6b-7d6e-4a7a-9421-67e5ddb75e91
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: fb36e440-a555-4350-bd25-a381709ca2df
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: _fivetran_synced
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: ba0543e9-021a-4766-99de-74e15d67f020
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 96546d1b-2579-413d-8d4c-fa5602f7d295
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: AGENT_CREATIONDATE
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 623b986d-29d0-46f8-b4d4-77308aea6944
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: a2dc55a4-c380-41cf-b2c7-fd531a70920d
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: AGENT_GROUP_ID
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 92be8a34-9254-46cf-a028-6460bf4adb08
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 2a5b9015-2ce8-41bd-b824-a2c8e4c4215f
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: BOOLEAN
+        description: ""
+        name: agent_is_paying
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 6cadb9dc-6e02-4840-8861-33aee05fe7f4
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b81cb991-15d1-47fb-9de1-f520d11517c8
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: agent_name
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 2936149b-885a-442b-b6e3-d01a3287b71b
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 55e08d9f-a686-4f0b-b7d8-d87fdfc0f138
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: agent_planlevel
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 92ea0bdf-4ee8-49d3-a493-a637f50d517d
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: "\"ACCOUNT_HISTORY\".\"agent_planlevel\""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0afc8fdb-d1c5-41c1-a215-a183b797f38b
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: first_visit
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 7c9100c4-65dd-4027-8aea-18effe25b6f5
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: "\"ACCOUNT_HISTORY\".\"first_visit\""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 249ed0cf-ee65-4ac3-8c80-1b557b1e81ab
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: id_hash
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: f5f0c22b-d347-4d90-9b58-bc56a5c33d1f
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: "{{even_odd('\"ACCOUNT_HISTORY\".\"id_hash\"')}}"
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 0a40f17d-a92c-4bc0-a5d5-f99e7231ff6e
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: last_visit
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: fab1c62d-f1c5-429f-af47-2b30f3cd103e
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: "\"ACCOUNT_HISTORY\".\"last_visit\""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: aa838774-6b33-46df-a5d0-5db2a635a8f9
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_status
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b209a2ee-4db7-41f3-bfe7-9d0fa02b0a03
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 84dd37ae-f8c2-4eb8-9240-4694f39fecc1
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: agent_salesforceaccountid
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1bc9d2a6-c2fc-4ee3-859c-0083dbe50658
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 6bec22b9-32dd-4887-837b-dc83b097a8f5
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_customer_health_engagement_score_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 277b1a95-5ab5-4140-b198-9a7ffed40ff0
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: fc6fdc1c-04ad-44cf-9933-36f0b326fbfe
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_employee_range_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 21992f4c-5aaf-4162-bcaa-6d03ed336f29
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: bd101ef1-2549-4140-964c-140f21aa814e
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_platform_level_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 966620e8-55a9-46e8-a147-fb6015da6c7d
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 24d4caec-f6fa-408f-b00d-427d9eac3e33
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_segment_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 4af58cb4-11d5-4bab-96ea-7d860e4af698
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: ccc4121f-092d-4f3d-abe2-c705d3497e08
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_name
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1a58abc4-dc64-4288-8355-3c11461950cf
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4ada4314-2cb3-4afa-9f0f-0878a2c36023
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_account_owner_email_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 5a69cc28-faa8-48dc-a804-9a2100baaffd
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: c7761fd8-fa3e-4a5b-81fe-a7a23839b5d6
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_pbf_account_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 14b42881-d10f-4ec2-bd8f-f511f0853bdc
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 097742cd-b420-4501-855e-adcb4f60d1e9
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: salesforce_region_c
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: b0b2779b-6915-46e3-930d-aad131f59206
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 76d8d362-b054-4cf4-b862-7c8dd0013ec1
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: LOAD_TIMESTAMP
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 1a5eba6f-00ba-4bdd-9a81-8ddd4e2f727f
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: b3ea8240-fedc-401c-a99e-aced4a536153
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: FILENAME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: cb7ff0f3-9d6d-4380-9d0a-f11588ce8340
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: 654fcaa8-9e90-4dfd-bdc0-592558178c06
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: NUMBER(38,0)
+        description: ""
+        name: FILE_ROW_NUMBER
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 67af4340-72fd-481e-b439-05612f11c69c
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: ada3bb37-0941-4bf0-ad9a-3941148be9c1
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: FILE_LAST_MODIFIED
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 938cee6d-bbd9-4834-9dab-837f458a4925
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - appliedColumnTests: {}
+        columnReference:
+          columnCounter: d487ef58-0a46-4657-b537-f57921a4d281
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: SCAN_TIME
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 5bbd6985-1ac2-40f1-8838-a6014551b3d4
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - acceptedValues:
+          strictMatch: true
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 784c6ef3-88ed-47b8-917b-551265d54bad
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        defaultValue: ""
+        description: ""
+        name: testc
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: "0"
+                stepCounter: "0"
+            transform: ""
+    cteString: ""
+    enabledColumnTestIDs: []
+    sourceMapping:
+      - aliases: {}
+        customSQL:
+          customSQL: ""
+        dependencies:
+          - locationName: SOURCE
+            nodeName: ACCOUNT_HISTORY
+        join:
+          joinCondition: FROM {{ ref('SOURCE', 'ACCOUNT_HISTORY') }} "ACCOUNT_HISTORY"
+        name: STG_ACCOUNT_HISTORY1
+        noLinkRefs: []
+  name: STG_ACCOUNT_HISTORY1
+  overrideSQL: false
+  schema: ""
+  sqlType: Stage
+  type: sql
+  version: 1
+type: Node
