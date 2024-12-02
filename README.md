@@ -1,15 +1,13 @@
-<h1 align="center">dbt-expectations</h1>
+<h1 align="center">great-expectations</h1>
 <p align="center">
-<img alt="logo" width="10%" src="https://raw.githubusercontent.com/calogica/dbt-expectations/main/static/dbt-expectations-logo.svg" />
 </p>
 
 <hr/>
 
 <p align="center">
-<a href="https://circleci.com/gh/calogica/dbt-expectations/tree/main">
-<img alt="CircleCI" src="https://img.shields.io/circleci/build/github/calogica/dbt-expectations/main?style=plastic"/>
-</a>
-<img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-ff69b4?style=plastic"/>
+<a alt="License"
+        href="https://github.com/coalesceio/Great_Expectations/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
 
 </p>
 
