@@ -248,8 +248,8 @@ Expect the columns to exactly match a specified list.
 ```yaml
 tests: {{ expect_table_columns_to_match_ordered_list(tablename, column_list, transform="UPPER") }}
 
-Inputs:   column_list: ["col_a", "col_b"]
-          transform: upper # (Optional)
+Inputs:   column_list = ["col_a", "col_b"]
+          transform = upper # (Optional)
 ```
 
 ### [expect_table_columns_to_match_set]
