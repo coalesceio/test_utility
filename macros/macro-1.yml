@@ -1,32 +1,6 @@
 fileVersion: 1
 id: "1"
 macroString: |+
-  {%- macro getColumnId( colName ) -%}
-
-      {%- set columnId = columns | selectattr('name','equalto',colName) | map(attribute='id') | first -%}
-
-      {{- columnId -}}
-
-  {%- endmacro -%}
-
-  {% macro getSourceNameFromColumnName( colName ) %}
-
-      {%- set sourceObject = sources[0].columns | selectattr('id','eq',getColumnId( colName )) | map(attribute='sourceColumns')  | first | map(attribute='node.name') | first -%}
-
-      "{{- sourceObject -}}"
-
-  {% endmacro %}
-
-
-  {%- macro ddd(input) -%}
-      {%- set help = input -%}
-      {{help}}
-  {%- endmacro -%}
-
-  {%- macro even_odd(column) -%}
-      CASE WHEN MOD({{ column }}, 2) = 0 THEN 'EVEN' ELSE 'ODD' END
-  {%- endmacro %}
-
   {%- macro expect_column_to_exist(tablename, columnName) -%}
       {%- set tablename = tablename-%}
       {%- set columnName = columnName-%}
@@ -164,37 +138,6 @@ macroString: |+
                   Where {{filterCondition}}
               {%- endif -%}
       ) table1 where numberOfRecordActual != {{numberOfRecordExpected}} 
-  {%- endmacro %}
-
-
-
-  {%- macro test_stored_proc(tablename) -%}
-      {%- set tablename = tablename-%}
-      SELECT * FROM TABLE(TO_QUERY('SELECT count(*) FROM IDENTIFIER($tablename)'));
-  {%- endmacro %}
-
-
-  {%- macro test() -%}
-      CREATE OR REPLACE PROCEDURE "DBT_EXPECTATIONS"."TARGET"."stored_proc"()
-      RETURNS TABLE ( count INT )
-      LANGUAGE SQL AS
-      DECLARE
-      res RESULTSET;
-      BEGIN
-      res := (SELECT count(*) FROM "DBT_EXPECTATIONS"."TARGET"."STG_ACCOUNT_HISTORY");
-      RETURN TABLE(res);
-      END;
-
-  {%- endmacro %}
-
-  {%- macro test_c() -%}
-      {{test()}}
-      "DBT_EXPECTATIONS"."TARGET"."stored_proc"()
-  {%- endmacro %}
-
-  {%- macro test_count() -%}
-      {%- set countq = test_c()-%}
-      {{countq}}
   {%- endmacro %}
 
 
@@ -1049,11 +992,6 @@ macroString: |+
       WHERE ABS(z_score) > {{ sigma_threshold }}
   {% endmacro %}
 
-
-  {% macro test123(group_by = None ) %}
-      {%- set partition_by = 'partition by "' ~ (group_by | join('", "')) ~ '"' if group_by else '' -%}
-      select    {{partition_by}}
-  {% endmacro %}
 
   {% macro expect_column_values_to_be_within_n_moving_stdevs(
       model, 
