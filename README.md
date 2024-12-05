@@ -16,6 +16,43 @@
 `great-expectations` is an extension package for [**Coalesce**], inspired by the [Great Expectations package for Python](https://greatexpectations.io/). The intent is to allow Coalesce users to deploy GE-like tests in their data warehouse directly from Coalesce, vs having to add another integration with their data warehouse.
 
 
+## How to use?
+
+Step 1: Open a Node for which you want to create a test case.
+
+Step 2: Goto Testing Configuration.
+
+Step 3: Click on 'New Test' button.
+
+
+<img width="1511" alt="Screenshot 2024-12-05 at 5 08 40 PM" src="https://github.com/user-attachments/assets/dcc56a4b-5f89-49e8-be24-ee0deaa6a099">
+
+
+Step 4: You will see new test case added for the Node.
+
+<img width="1511" alt="Screenshot 2024-12-05 at 5 36 32 PM" src="https://github.com/user-attachments/assets/aab2130d-9bbe-43f0-91b5-b1ae592bf842">
+
+
+Step 5: In text field call macro for the test case you want to execute.
+        
+_For Example, I am trying to Run Test case, 'expect_table_row_count_to_be_between' from the avilable test below._
+        
+<img width="1217" alt="Screenshot 2024-12-05 at 5 27 18 PM" src="https://github.com/user-attachments/assets/29febbe9-ffe4-446a-8c1c-00cd0c438d1e">
+
+
+Step 6: Replace the input parameters in macro call as per requirment.
+
+_In this test case 'group_by' and 'filterCondition' inputs are optional, so i am ignoring here._
+        
+<img width="1512" alt="Screenshot 2024-12-05 at 5 30 42 PM" src="https://github.com/user-attachments/assets/ecd5d56b-d54b-4d0f-a356-ee150ecdd0e1">
+
+
+Step 7: You can execute this test case using 'Run' button.
+
+<img width="1510" alt="Screenshot 2024-12-05 at 5 33 05 PM" src="https://github.com/user-attachments/assets/ddff33a0-0fce-4b64-9045-28b789708438">
+
+        
+
 ## Available Tests
 
 ### Table shape
@@ -38,9 +75,6 @@
 
 ### Missing values, unique values, and types
 
-- [expect_column_values_to_be_null](#expect_column_values_to_be_null)
-- [expect_column_values_to_not_be_null](#expect_column_values_to_not_be_null)
-- [expect_column_values_to_be_unique](#expect_column_values_to_be_unique)
 - [expect_column_values_to_be_of_type](#expect_column_values_to_be_of_type)
 - [expect_column_values_to_be_in_type_list](#expect_column_values_to_be_in_type_list)
 - [expect_column_values_to_have_consistent_casing](#expect_column_values_to_have_consistent_casing)
