@@ -15,12 +15,7 @@ operation:
   locationName: TARGET
   materializationType: table
   metadata:
-    appliedNodeTests:
-      - continueOnFailure: false
-        description: ""
-        name: Test 1
-        runOrder: Before
-        templateString: "{{ test_missing_date_offset('agent_creationdate', '100', '1') }}"
+    appliedNodeTests: []
     columns:
       - appliedColumnTests: {}
         columnReference:
