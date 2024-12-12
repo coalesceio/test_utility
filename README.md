@@ -1,4 +1,4 @@
-<h1 align="center">great-expectations</h1>
+<h1 align="center">test-utility</h1>
 <p align="center">
 </p>
 
@@ -6,14 +6,14 @@
 
 <p align="center">
 <a alt="License"
-        href="https://github.com/coalesceio/Great_Expectations/blob/main/LICENSE">
+        href="https://github.com/coalesceio/test_utility/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
 
 </p>
 
 ## About
 
-`great-expectations` is an extension package for [**Coalesce**], inspired by the [Great Expectations package for Python](https://greatexpectations.io/). The intent is to allow Coalesce users to deploy GE-like tests in their data warehouse directly from Coalesce, vs having to add another integration with their data warehouse.
+`test-utility` is an extension package for [**Coalesce**], inspired by the [Great Expectations package for Python](https://greatexpectations.io/). The intent is to allow Coalesce users to deploy GE-like tests in their data warehouse directly from Coalesce, vs having to add another integration with their data warehouse.
 
 
 ## How to use?
