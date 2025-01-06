@@ -18,40 +18,63 @@
 
 ## How to use?
 
-Step 1: Open a Node for which you want to create a test case.
+Step 1: Once you install this package from Coalesce marketplace then you will need to import this package to workspace macro.
 
-Step 2: Goto Testing Configuration.
+<img width="1177" alt="Screenshot 2025-01-06 at 11 35 41 PM" src="https://github.com/user-attachments/assets/42dbf09d-9127-4b0c-b93e-968bd2abb95b" />
 
-Step 3: Click on 'New Test' button.
+
+Step 2: Open a Node for which you want to create a test case.
+
+Step 3: Goto Testing Configuration.
+
+Step 4: Click on 'New Test' button.
 
 
 <img width="1511" alt="Screenshot 2024-12-05 at 5 08 40 PM" src="https://github.com/user-attachments/assets/dcc56a4b-5f89-49e8-be24-ee0deaa6a099">
 
 
-Step 4: You will see new test case added for the Node.
+Step 5: You will see new test case added for the Node.
 
 <img width="1511" alt="Screenshot 2024-12-05 at 5 36 32 PM" src="https://github.com/user-attachments/assets/aab2130d-9bbe-43f0-91b5-b1ae592bf842">
 
 
-Step 5: In text field call macro for the test case you want to execute.
+Step 6: In the text field, call the macro using the package alias followed by a dot and the test case name.
         
 _For Example, I am trying to Run Test case, 'expect_table_row_count_to_be_between' from the avilable test below._
         
 <img width="1217" alt="Screenshot 2024-12-05 at 5 27 18 PM" src="https://github.com/user-attachments/assets/29febbe9-ffe4-446a-8c1c-00cd0c438d1e">
 
 
-Step 6: Replace the input parameters in macro call as per requirment.
+Step 7: Replace the input parameters in macro call as per requirment.
 
 _In this test case 'group_by' and 'filterCondition' inputs are optional, so i am ignoring here._
         
-<img width="1512" alt="Screenshot 2024-12-05 at 5 30 42 PM" src="https://github.com/user-attachments/assets/ecd5d56b-d54b-4d0f-a356-ee150ecdd0e1">
+<img width="1502" alt="Screenshot 2025-01-06 at 11 44 28 PM" src="https://github.com/user-attachments/assets/91f9731d-b2b6-4e60-b0d6-f5ccc9086035" />
 
 
-Step 7: You can execute this test case using 'Run' button.
+_Note - You can refer object name with all the avilable pattern in Coalesce. 
+        For example - 
 
-<img width="1510" alt="Screenshot 2024-12-05 at 5 33 05 PM" src="https://github.com/user-attachments/assets/ddff33a0-0fce-4b64-9045-28b789708438">
+Step 8: You can execute this test case using 'Run' button.
 
-        
+![image](https://github.com/user-attachments/assets/ce89e176-6bad-464d-b952-4d5bfd5cfcb3)
+
+
+## Example
+
+Lets consider, i have one table with named, TEST_TABLE. 
+
+1. I want to check if each column value to be in a given set.
+   _I will refer test case expect_column_values_to_be_in_set for this scenario. And my test case systax will be_
+```yaml
+   {{ testUtils.expect_column_values_to_be_in_set('{{this}}', 'CONTACT_VIA', ['EMAIL','CALL','TEXT']) }}
+```
+
+2. I want to check if each column entries to be strings that match a given SQL like pattern.
+   _I will refer test case expect_column_values_to_match_like_pattern for this scenario. And my test case systax will be_
+```yaml
+   {{ testUtils.expect_column_values_to_match_like_pattern('TEST_UTILITY.TARGET.TEST_TABLE', 'EMAIL_ID', '%@%') }}
+```
 
 ## Available Tests
 
