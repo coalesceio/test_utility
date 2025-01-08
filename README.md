@@ -73,7 +73,7 @@ Lets consider, i have one table with named, TEST_TABLE.
 2. I want to check if each column entries to be strings that match a given SQL like pattern.
    _I will refer test case expect_column_values_to_match_like_pattern for this scenario. And my test case systax will be_
 ```yaml
-   {{ testUtils.expect_column_values_to_match_like_pattern('TEST_UTILITY.TARGET.TEST_TABLE', 'EMAIL_ID', '%@%') }}
+   {{ testUtils.expect_column_values_to_match_like_pattern('{{ ref("target","other_model") }}', 'EMAIL_ID', '%@%') }}
 ```
 
 ## Available Tests
@@ -344,7 +344,7 @@ Expect the number of rows in a model match another model.
 ```yaml
 tests: {{ expect_table_row_count_to_equal_other_table(tablename, comparing_tableName, group_by_t1 = None, group_by_t2 = None,  filterCondition_t1 = None, filterCondition_t2 = None) }}
 
-Inputs:   comparing_tableName = ref("other_model")
+Inputs:   comparing_tableName = {{ ref('target','other_model') }}
           group_by_t1 = ['col1', 'col2'] # (Optional)
           group_by_t2 = ['col1', 'col2'] # (Optional)
           filterCondition_t1 = "id is not null" # (Optional)
@@ -360,7 +360,7 @@ Expect the number of rows in a model to match another model times a preconfigure
 ```yaml
 tests: {{ expect_table_row_count_to_equal_other_table_times_factor(tablename, comparing_tableName,  group_by_t1 = None, group_by_t2 = None, filterCondition_t1 = None, filterCondition_t2 = None, factor = None) }}
 
-Inputs:   comparing_tableName = ref("other_model")
+Inputs:   comparing_tableName = {{ ref('target','other_model') }}
           factor = '13'
           group_by_t1 = ['col1', 'col2'] # (Optional)
           group_by_t2 = ['col1', 'col2'] # (Optional)
