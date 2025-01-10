@@ -20,7 +20,13 @@
 
 Step 1: Once you install this package from Coalesce marketplace then you will need to import this package to workspace macro.
 
-<img width="1177" alt="Screenshot 2025-01-06 at 11 35 41 PM" src="https://github.com/user-attachments/assets/42dbf09d-9127-4b0c-b93e-968bd2abb95b" />
+Assuming the alias you gave the package is TestUtility you would add the below Jinja.  `testUtils` could be anything.  You will use this alias to reference test macros in the imported package.
+
+```yaml
+{% import "TestUtility" as testUtils with context %}
+```
+
+<img width="1209" alt="Screen Shot 2025-01-10 at 1 25 18 PM" src="https://github.com/user-attachments/assets/62d6075d-f1cb-4b90-818e-b2a1c79285dc" />
 
 
 Step 2: Open a Node for which you want to create a test case.
@@ -38,7 +44,7 @@ Step 5: You will see new test case added for the Node.
 <img width="1511" alt="Screenshot 2024-12-05 at 5 36 32 PM" src="https://github.com/user-attachments/assets/aab2130d-9bbe-43f0-91b5-b1ae592bf842">
 
 
-Step 6: In the text field, call the macro using the package alias followed by a dot and the test case name.
+Step 6: In the text field, call the macro using the package import alias followed by a dot and the test case name.
         
 _For Example, I am trying to Run Test case, 'expect_table_row_count_to_be_between' from the avilable test below._
         
@@ -52,8 +58,7 @@ _In this test case 'group_by' and 'filterCondition' inputs are optional, so i am
 <img width="1502" alt="Screenshot 2025-01-06 at 11 44 28 PM" src="https://github.com/user-attachments/assets/91f9731d-b2b6-4e60-b0d6-f5ccc9086035" />
 
 
-_Note - You can refer object name with all the avilable pattern in Coalesce. 
-        For example - 
+Note - You can refer object name with all the avilable pattern in Coalesce.  For example, [ref_no_link()](https://docs.coalesce.io/docs/reference/ref-functions/#ref_no_link) may be used instead of [this](https://docs.coalesce.io/docs/reference/ref-functions/#this).
 
 Step 8: You can execute this test case using 'Run' button.
 
