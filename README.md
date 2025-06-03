@@ -54,15 +54,14 @@ _For Example, I am trying to Run Test case, 'expect_table_row_count_to_be_betwee
 Step 7: Replace the input parameters in macro call as per requirment.
 
 _In this test case 'group_by' and 'filterCondition' inputs are optional, so i am ignoring here._
-        
-![image](https://github.com/user-attachments/assets/91f9731d-b2b6-4e60-b0d6-f5ccc9086035)
+
+![image](https://github.com/user-attachments/assets/febcfc74-68dd-4447-a28a-94fb6b350935)
+
 
 
 Note - You can refer object name with all the avilable pattern in Coalesce.  For example, [ref_no_link()](https://docs.coalesce.io/docs/reference/ref-functions/#ref_no_link) may be used instead of [this](https://docs.coalesce.io/docs/reference/ref-functions/#this).
 
 Step 8: You can execute this test case using 'Run' button.
-
-![image](https://github.com/user-attachments/assets/ce89e176-6bad-464d-b952-4d5bfd5cfcb3)
 
 
 ## Example
@@ -72,13 +71,13 @@ Lets consider, i have one table with named, TEST_TABLE.
 1. I want to check if each column value to be in a given set.
    _I will refer test case expect_column_values_to_be_in_set for this scenario. And my test case systax will be_
 ```yaml
-   {{ testUtils.expect_column_values_to_be_in_set('{{this}}', 'CONTACT_VIA', ['EMAIL','CALL','TEXT']) }}
+   {{ testUtils.expect_column_values_to_be_in_set( 'CONTACT_VIA', ['EMAIL','CALL','TEXT']) }}
 ```
 
 2. I want to check if each column entries to be strings that match a given SQL like pattern.
    _I will refer test case expect_column_values_to_match_like_pattern for this scenario. And my test case systax will be_
 ```yaml
-   {{ testUtils.expect_column_values_to_match_like_pattern('{{ ref("target","other_model") }}', 'EMAIL_ID', '%@%') }}
+   {{ testUtils.expect_column_values_to_match_like_pattern('{{ 'EMAIL_ID', '%@%') }}
 ```
 
 ## Available Tests
@@ -172,7 +171,7 @@ Expect the specified column to exist.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_to_exist('tablename', 'columnName') }}
+tests: {{ expect_column_to_exist( 'columnName') }}
 ```
 
 ### [expect_row_values_to_have_recent_data]
@@ -182,7 +181,7 @@ Expect the model to have rows that are at least as recent as the defined interva
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_row_values_to_have_recent_data('tablename', 'columnName', 'datePart_', 'interval_', row_condition = None) }}
+tests: {{ expect_row_values_to_have_recent_data( 'columnName', 'datePart_', 'interval_', row_condition = None) }}
 
 Inputs: datepart_ = 'day'
         interval_ = '1'
@@ -197,7 +196,7 @@ Use this to test whether there is recent data for each grouped row defined by `g
 *Applies to:* Object
 
 ```yaml
-tests : {{ expect_grouped_row_values_to_have_recent_data(tablename,group_by,timestamp_column,datepart,interval,filterCondition=None ) }}
+tests : {{ expect_grouped_row_values_to_have_recent_data(group_by,timestamp_column,datepart,interval,filterCondition=None ) }}
 
 Inputs: group_by = ['group_id', 'other_group_id']
         timestamp_column = 'date_day'
@@ -215,7 +214,7 @@ Expect an (optionally grouped) expression to match the same (or optionally other
 Simple Test:
 
 ```yaml
-tests: {{ expect_table_aggregation_to_equal_other_table(model,expression,compare_model,group_by=None) }}
+tests: {{ expect_table_aggregation_to_equal_other_table(expression,compare_model,group_by=None) }}
 
 Inputs: expression = sum(col_numeric_a)
         compare_model = ref("other_model")
@@ -226,7 +225,7 @@ More complex Test:
 
 ```yaml
 tests: {{ expect_table_aggregation_to_equal_other_table(
-          model,expression,
+          expression,
           compare_model,compare_expression=None,
           group_by=None,compare_group_by=None,
           row_condition=None,compare_row_condition=None,
@@ -251,7 +250,7 @@ Expect the number of columns in a model to be between two values.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_column_count_to_be_between(tablename, minValue , maxValue) }}
+tests: {{ expect_table_column_count_to_be_between( minValue , maxValue) }}
 Inputs: minValue = 1
         maxValue = 4 
 ```
@@ -263,7 +262,7 @@ Expect the number of columns in a model to match another model.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_column_count_to_equal_other_table('tablename', 'comparing_tableName') }}
+tests: {{ expect_table_column_count_to_equal_other_table( 'comparing_tableName') }}
 
 ```
 
@@ -274,7 +273,7 @@ Expect the columns in a model not to contain a given list.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_columns_to_not_contain_set(tablename, notExpectedColumnList) }}
+tests: {{ expect_table_columns_to_not_contain_set( notExpectedColumnList) }}
 Inputs: notExpectedColumnList = ["col_a", "col_b"]
 ```
 
@@ -285,7 +284,7 @@ Expect the columns in a model to contain a given list.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_columns_to_contain_set(tablename, ExpectedColumnList) }}
+tests: {{ expect_table_columns_to_contain_set( ExpectedColumnList) }}
 Inputs: ExpectedColumnList = ["col_a", "col_b"]
 
 ```
@@ -297,7 +296,7 @@ Expect the number of columns in a model to be equal to `expected_number_of_colum
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_column_count_to_equal(tablename, ExpectedCount ) }}
+tests: {{ expect_table_column_count_to_equal( ExpectedCount ) }}
 Inputs: ExpectedCount = '7'
 ```
 
@@ -308,7 +307,7 @@ Expect the columns to exactly match a specified list.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_columns_to_match_ordered_list(tablename, column_list, transform="UPPER") }}
+tests: {{ expect_table_columns_to_match_ordered_list( column_list, transform="UPPER") }}
 
 Inputs:   column_list = ["col_a", "col_b"]
           transform = upper # (Optional)
@@ -321,7 +320,7 @@ Expect the columns in a model to match a given list.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_columns_to_match_set(tablename, ExpectedColumnList) }}
+tests: {{ expect_table_columns_to_match_set( ExpectedColumnList) }}
 
 Inputs: column_list = ["col_a", "col_b"]
 ```
@@ -332,7 +331,7 @@ Expect the number of rows in a model to be between two values.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_row_count_to_be_between(tablename, minValue , maxValue ,group_by = None, filterCondition = None) }}
+tests: {{ expect_table_row_count_to_be_between( minValue , maxValue ,group_by = None, filterCondition = None) }}
 
 Inputs:   minValue = 1 
           maxValue = 4 
@@ -347,7 +346,7 @@ Expect the number of rows in a model match another model.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_row_count_to_equal_other_table(tablename, comparing_tableName, group_by_t1 = None, group_by_t2 = None,  filterCondition_t1 = None, filterCondition_t2 = None) }}
+tests: {{ expect_table_row_count_to_equal_other_table( comparing_tableName, group_by_t1 = None, group_by_t2 = None,  filterCondition_t1 = None, filterCondition_t2 = None) }}
 
 Inputs:   comparing_tableName = {{ ref('target','other_model') }}
           group_by_t1 = ['col1', 'col2'] # (Optional)
@@ -363,7 +362,7 @@ Expect the number of rows in a model to match another model times a preconfigure
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_row_count_to_equal_other_table_times_factor(tablename, comparing_tableName,  group_by_t1 = None, group_by_t2 = None, filterCondition_t1 = None, filterCondition_t2 = None, factor = None) }}
+tests: {{ expect_table_row_count_to_equal_other_table_times_factor( comparing_tableName,  group_by_t1 = None, group_by_t2 = None, filterCondition_t1 = None, filterCondition_t2 = None, factor = None) }}
 
 Inputs:   comparing_tableName = {{ ref('target','other_model') }}
           factor = '13'
@@ -380,7 +379,7 @@ Expect the number of rows in a model to be equal to `expected_number_of_rows`.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_table_row_count_to_equal(tablename, numberOfRecordExpected, group_by = None, filterCondition = None) }}
+tests: {{ expect_table_row_count_to_equal( numberOfRecordExpected, group_by = None, filterCondition = None) }}
 
 Inputs:   numberOfRecordExpected = '4'
           group_by = ['group_id', 'other_group_id', ...] # (Optional)
@@ -394,7 +393,7 @@ Expect a column to be of a specified data type.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_of_type(tablename, columnName, dataType) }}
+tests: {{ expect_column_values_to_be_of_type( columnName, dataType) }}
 
 Input: dataType = 'date'
 ```
@@ -406,7 +405,7 @@ Expect a column to be one of a specified type list.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_in_type_list(tablename, columnName, dataType) }}
+tests: {{ expect_column_values_to_be_in_type_list( columnName, dataType) }}
 
 Inputs: dataType = ['date', 'datetime']
 ```
@@ -418,7 +417,7 @@ Expect a column to have consistent casing. By setting `display_inconsistent_colu
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_have_consistent_casing(tablename, column_name, display_inconsistent_columns=False) }}
+tests: {{ expect_column_values_to_have_consistent_casing( column_name, display_inconsistent_columns=False) }}
 
 Input: display_inconsistent_columns = false # (Optional)
 ```
@@ -430,7 +429,7 @@ Expect each column value to be in a given set.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_in_set(tablename, columnName, expectedValueList, filterCondition = None) }}
+tests: {{ expect_column_values_to_be_in_set( columnName, expectedValueList, filterCondition = None) }}
 
 Inputs: expectedValueList = ['a','b','c']
         filterCondition = "id is not null" # (Optional)
@@ -443,7 +442,7 @@ Expect each column value to be between two values.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_between(tablename, columnName, minValue , maxValue, filterCondition = None ) }}
+tests: {{ expect_column_values_to_be_between( columnName, minValue , maxValue, filterCondition = None ) }}
 
 Inputs: minValue = '0'  
         maxValue = '10' 
@@ -457,7 +456,7 @@ Expect each column value not to be in a given set.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_not_be_in_set(tablename, columnName, expectedValueList, filterCondition = None) }}
+tests: {{ expect_column_values_to_not_be_in_set( columnName, expectedValueList, filterCondition = None) }}
 
 Inputs: expectedValueList = ['e','f','g']
         filterCondition = "id is not null" # (Optional)
@@ -472,7 +471,7 @@ If `strictly: True`, then this expectation is only satisfied if each consecutive
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_increasing(tablename,  column_name, sort_column=None, strictly=True, filterCondition=None, group_by=None, step=None) }}
+tests: {{ expect_column_values_to_be_increasing(  column_name, sort_column=None, strictly=True, filterCondition=None, group_by=None, step=None) }}
 
 Inputs: sort_column = date_day
         filterCondition = "id is not null" # (Optional)
@@ -490,7 +489,7 @@ If `strictly=True`, then this expectation is only satisfied if each consecutive 
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_decreasing(model, column_name, sort_column=None, strictly=True, filterCondition=None, group_by=None, step=None) }}
+tests: {{ expect_column_values_to_be_decreasing( column_name, sort_column=None, strictly=True, filterCondition=None, group_by=None, step=None) }}
 
 Inputs: sort_column = col_numeric_a
         filterCondition = "id is not null" # (Optional)
@@ -506,7 +505,7 @@ Expect column entries to be strings with length between a min_value value and a 
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_value_lengths_to_be_between(tablename, columnName, minLength, maxLength, filterCondition = None) }}
+tests: {{ expect_column_value_lengths_to_be_between( columnName, minLength, maxLength, filterCondition = None) }}
 
 Inputs: min_value = '1' 
         max_value = '4' 
@@ -520,7 +519,7 @@ Expect column entries to be strings with length equal to the provided value.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_value_lengths_to_equal(tablename, columnName, rowsValueLength, filterCondition = None) }}
+tests: {{ expect_column_value_lengths_to_equal( columnName, rowsValueLength, filterCondition = None) }}
 
 Inputs: rowsValueLength = '10'
         filterCondition = "id is not null" # (Optional)
@@ -538,7 +537,7 @@ Optional (keyword) arguments:
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_match_regex(tablename, columnName, regex, isRaw = False, flags='', filterCondition=None ) }}
+tests: {{ expect_column_values_to_match_regex( columnName, regex, isRaw = False, flags='', filterCondition=None ) }}
 
 Inputs: regex = '[at]+'
         filterCondition = 'id is not null' # (Optional)
@@ -558,7 +557,7 @@ Optional (keyword) arguments:
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_not_match_regex(tablename, columnName, regex, isRaw = False, flags='', filterCondition=None ) }} 
+tests: {{ expect_column_values_to_not_match_regex( columnName, regex, isRaw = False, flags='', filterCondition=None ) }} 
 
 Inputs: regex = "[at]+"
         filterCondition = "id is not null" # (Optional)
@@ -578,7 +577,7 @@ Optional (keyword) arguments:
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_match_regex_list(tablename, columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None ) }}
+tests: {{ expect_column_values_to_match_regex_list( columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None ) }}
 
 Inputs: regex_list = ["@[^.]*", "&[^.]*"]
         matchType = 'any' # (Optional. Default is 'all', which applies an 'AND' for each regex. If 'any', it applies an 'OR' for each regex.)
@@ -599,7 +598,7 @@ Optional (keyword) arguments:
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_not_match_regex_list(tablename, columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None ) }} 
+tests: {{ expect_column_values_to_not_match_regex_list( columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None ) }} 
 
 Inputs: regex_list = ["@[^.]*", "&[^.]*"]
         matchType = 'any' # (Optional. Default is 'all', which applies an 'AND' for each regex. If 'any', it applies an 'OR' for each regex.)
@@ -615,7 +614,7 @@ Expect column entries to be strings that match a given SQL `like` pattern.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_match_like_pattern(tablename, columnName, pattern, filterCondition = None) }}
+tests: {{ expect_column_values_to_match_like_pattern( columnName, pattern, filterCondition = None) }}
 
 Inputs: pattern = '%@%'
         filterCondition = "id is not null" # (Optional)
@@ -628,7 +627,7 @@ Expect column entries to be strings that do not match a given SQL `like` pattern
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_not_match_like_pattern(tablename, columnName, pattern, filterCondition = None) }}
+tests: {{ expect_column_values_to_not_match_like_pattern( columnName, pattern, filterCondition = None) }}
 
 Inputs: pattern = '%&%'
         row_condition = "id is not null" # (Optional)
@@ -641,7 +640,7 @@ Expect the column entries to be strings that match any of a list of SQL `like` p
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_match_like_pattern_list(tablename, columnName, patternList, matchType='any', filterCondition = None) }}
+tests: {{ expect_column_values_to_match_like_pattern_list( columnName, patternList, matchType='any', filterCondition = None) }}
 
 Inputs: patternList = ["%@%", "%&%"]
         matchType = 'any' # (Optional. Default is 'any', which applies an 'OR' for each pattern. If 'all', it applies an 'AND' for each regex.)
@@ -655,7 +654,7 @@ Expect the column entries to be strings that do not match any of a list of SQL `
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_not_match_like_pattern_list(tablename, columnName, patternList, matchType='any', filterCondition = None) }}
+tests: {{ expect_column_values_to_not_match_like_pattern_list( columnName, patternList, matchType='any', filterCondition = None) }}
 
 Inputs: patternList = ["%@%", "%&%"]
         matchType = 'any' # (Optional. Default is 'any', which applies an 'OR' for each pattern. If 'all', it applies an 'AND' for each regex.)
@@ -669,7 +668,7 @@ Expect the number of distinct column values to be equal to a given value.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_count_to_equal(tablename, columnName, expextedCount, group_by = None, filterCondition = None) }}
+tests: {{ expect_column_distinct_count_to_equal( columnName, expextedCount, group_by = None, filterCondition = None) }}
 
 Inputs: value = '10'
         group_by = ['group_id', 'other_group_id', ...] # (Optional)
@@ -683,7 +682,7 @@ Expect the number of distinct column values to be greater than a given value.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_count_to_be_greater_than(tablename, columnName, expextedCount, group_by = None, filterCondition = None) }}
+tests: {{ expect_column_distinct_count_to_be_greater_than( columnName, expextedCount, group_by = None, filterCondition = None) }}
 
 Inputs: value = '10'
         group_by = ['group_id', 'other_group_id', ...] # (Optional)
@@ -697,7 +696,7 @@ Expect the number of distinct column values to be less than a given value.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_count_to_be_less_than(tablename, columnName, expextedCount, group_by = None, filterCondition = None) }}
+tests: {{ expect_column_distinct_count_to_be_less_than( columnName, expextedCount, group_by = None, filterCondition = None) }}
 
 Inputs: value = '10'
         group_by = ['group_id', 'other_group_id', ...] # (Optional)
@@ -711,7 +710,7 @@ Expect the set of distinct column values to be contained by a given set.
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_values_to_be_in_set(tablename, columnName, expectedValueList, filterCondition = None) }}
+tests: {{ expect_column_distinct_values_to_be_in_set( columnName, expectedValueList, filterCondition = None) }}
 
 Inputs: value_set = ['a','b','c','d']
         row_condition = "id is not null" # (Optional)
@@ -726,7 +725,7 @@ In contrast to `expect_column_values_to_be_in_set` this ensures not that all col
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_values_to_contain_set(tablename, columnName, expectedValueList, filterCondition = None) }}
+tests: {{ expect_column_distinct_values_to_contain_set( columnName, expectedValueList, filterCondition = None) }}
 
 Inputs: value_set = ['a','b']
         filterCondition = "id is not null" # (Optional)
@@ -741,7 +740,7 @@ In contrast to `expect_column_distinct_values_to_contain_set` this ensures not o
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_values_to_equal_set(tablename, columnName, expectedValueList, filterCondition = None) }}
+tests: {{ expect_column_distinct_values_to_equal_set( columnName, expectedValueList, filterCondition = None) }}
 
 Inputs: value_set = ['a','b','c']
         row_condition = "id is not null" # (Optional)
@@ -754,7 +753,7 @@ Expect the number of distinct column values to be equal to number of distinct va
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_distinct_count_to_equal_other_table(tablename, columnName, otherTableName, otherColumnName, filterCondition_t1 = None, filterCondition_t2 = None) }}
+tests: {{ expect_column_distinct_count_to_equal_other_table( columnName, otherTableName, otherColumnName, filterCondition_t1 = None, filterCondition_t2 = None) }}
 
 Inputs:   columnName = 'col_1'
           otherTableName = ref("my_model_2")
@@ -771,7 +770,7 @@ Expect the column mean to be between a min_value value and a max_value value (in
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_mean_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
+tests: {{ expect_column_mean_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
 
 Inputs: minValue = '0' 
         maxValue = '2' 
@@ -786,7 +785,7 @@ Expect the column median to be between a min_value value and a max_value value (
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_median_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
+tests: {{ expect_column_median_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
 
 Inputs: minValue = '0'
         maxValue = '2'
@@ -801,7 +800,7 @@ Expect specific provided column quantiles to be between provided min_value and m
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_quantile_values_to_be_between(tablename, columnName, quantile, minValue , maxValue, filterCondition = None, group_by = None ) }}
+tests: {{ expect_column_quantile_values_to_be_between( columnName, quantile, minValue , maxValue, filterCondition = None, group_by = None ) }}
 
 Inputs: quantile = '.95'
         minValue = '0' 
@@ -817,7 +816,7 @@ Expect the column standard deviation to be between a min_value value and a max_v
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_stdev_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
+tests: {{ expect_column_stdev_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
 
 Inputs: minValue = '0' 
         maxValue = '2'
@@ -832,7 +831,7 @@ Expect the number of unique values to be between a min_value value and a max_val
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_unique_value_count_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
+tests: {{ expect_column_unique_value_count_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
 
 Inputs: minValue = '2'
         maxValue = '2' 
@@ -849,7 +848,7 @@ For example, in a column containing [1, 2, 2, 3, 3, 3, 4, 4, 4, 4], there are 4 
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_proportion_of_unique_values_to_be_between(tablename, columnName, minValue, maxValue,  filterCondition = None, group_by = None) }}
+tests: {{ expect_column_proportion_of_unique_values_to_be_between( columnName, minValue, maxValue,  filterCondition = None, group_by = None) }}
 
 Inputs: minValue = '0'  
         maxValue = '.4' 
@@ -864,7 +863,7 @@ Expect the most common value to be within the designated value set
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_most_common_value_to_be_in_set(tablename, column_name, value_set, top_n, quote_values=True, data_type="STRING", filterCondition=None) }}
+tests: {{ expect_column_most_common_value_to_be_in_set( column_name, value_set, top_n, quote_values=True, data_type="STRING", filterCondition=None) }}
 
 Inputs: value_set: ['0.5']
         top_n: 1
@@ -879,7 +878,7 @@ Expect the column max to be between a min and max value
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_max_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None) }}
+tests: {{ expect_column_max_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None) }}
 
 Inputs: minValue = '1' 
         maxValue = '1' 
@@ -894,7 +893,7 @@ Expect the column min to be between a min and max value
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_min_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None) }}
+tests: {{ expect_column_min_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None) }}
 
 Inputs: minValue = 0 
         maxValue = 1 
@@ -909,7 +908,7 @@ Expect the column to sum to be between a min and max value
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_sum_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
+tests: {{ expect_column_sum_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) }}
 
 Inputs: minValue = 1 
         maxValue = 2 
@@ -924,7 +923,7 @@ Expect values in column A to be greater than column B.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_column_pair_values_A_to_be_greater_than_B(tablename, columnNameA, columnNameB, orEqualTo = FALSE, filterCondition = None) }}
+tests: {{ expect_column_pair_values_A_to_be_greater_than_B( columnNameA, columnNameB, orEqualTo = FALSE, filterCondition = None) }}
 
 Inputs: columnNameA = 'col_numeric_a'
         columnNameB = 'col_numeric_a'
@@ -939,7 +938,7 @@ Expect the values in column A to be the same as column B.
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_column_pair_values_to_be_equal(tablename, columnNameA, columnNameB, filterCondition = None) }}
+tests: {{ expect_column_pair_values_to_be_equal( columnNameA, columnNameB, filterCondition = None) }}
 
 Inputs: columnNameA = 'col_numeric_a'
         columnNameB = 'col_numeric_a'
@@ -955,7 +954,7 @@ Note: value pairs are expressed as lists within lists
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_column_pair_values_to_be_in_set(tablename, columnNameA, columnNameB, validPairs, filterCondition = None) }}
+tests: {{ expect_column_pair_values_to_be_in_set( columnNameA, columnNameB, validPairs, filterCondition = None) }}
 
 Inputs: column_A = 'col_numeric_a'
         column_B = 'col_numeric_b'
@@ -970,7 +969,7 @@ Expect the values for each record to be unique across the columns listed. Note t
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_select_column_values_to_be_unique_within_record(tablename, column_list, filterCondition=None) }}
+tests: {{ expect_select_column_values_to_be_unique_within_record( column_list, filterCondition=None) }}
 
 Inputs: column_list = ["col_string_a", "col_string_b"]
         filterCondition = "id is not null" # (Optional)
@@ -983,7 +982,7 @@ Expects that sum of all rows for a set of columns is equal to a specific value
 *Applies to:* Object
 
 ```yaml
-tests: {{ expect_multicolumn_sum_to_equal(tablename, column_list, sum_total, group_by=None, filterCondition=None) }}
+tests: {{ expect_multicolumn_sum_to_equal( column_list, sum_total, group_by=None, filterCondition=None) }}
 
 Inputs: column_list = ["col_numeric_a", "col_numeric_b"]
         sum_total = 4
@@ -998,7 +997,7 @@ Expect that the columns are unique together, e.g. a multi-column primary key.
 *Applies to:* Object
 
 ```yaml
-tests: {% macro expect_compound_columns_to_be_unique(tablename, columnNames, filterCondition = None) %}
+tests: {% macro expect_compound_columns_to_be_unique( columnNames, filterCondition = None) %}
 
 Inputs: column_list = ["date_col", "col_string_b"]
         filterCondition = "id is not null" # (Optional)
@@ -1014,7 +1013,7 @@ By applying a list of columns in the `group_by` parameter, you can also test for
 
 ```yaml
 tests: {{ expect_column_values_to_be_within_n_moving_stdevs(
-    model, column_name, date_column_name, group_by=None, 
+     column_name, date_column_name, group_by=None, 
     period='day', lookback_periods=1, trend_periods=7, test_periods=14, 
     sigma_threshold=3, sigma_threshold_upper=None, sigma_threshold_lower=None, 
     take_diffs=true, take_logs=true
@@ -1040,7 +1039,7 @@ Expects (optionally grouped & summed) metric values to be within Z sigma away fr
 *Applies to:* Column
 
 ```yaml
-tests: {{ expect_column_values_to_be_within_n_stdevs(tablename, column_name, group_by=None, sigma_threshold=3) }}
+tests: {{ expect_column_values_to_be_within_n_stdevs( column_name, group_by=None, sigma_threshold=3) }}
 
 Inputs: group_by = ['group_id'] # (Optional. Default is 'None')
         sigma_threshold = '3' # (Optional. Default is 3)
