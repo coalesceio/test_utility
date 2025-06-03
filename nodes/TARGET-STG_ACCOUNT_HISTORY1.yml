@@ -20,7 +20,7 @@ operation:
         description: ""
         name: Test
         runOrder: Before
-        templateString: "{{ expect_table_row_count_to_be_between('{{this}}', 1 , 5) }}"
+        templateString: "{{ expect_table_column_count_to_be_between(4,5) }}"
     columns:
       - appliedColumnTests: {}
         columnReference:

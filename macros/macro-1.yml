@@ -1,19 +1,17 @@
 fileVersion: 1
 id: "1"
 macroString: |+
-  {%- macro expect_column_to_exist(tablename, columnName) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_to_exist(columnName) -%}
       {%- set columnName = columnName-%}
       {%- set columnId = columns | selectattr('name','equalto',columnName) | map(attribute='id') | first -%}
       select '{{columnName}}' where '{{columnId}}' = ''
   {%- endmacro %}
 
-  {%- macro expect_table_row_count_to_equal(tablename, numberOfRecordExpected, group_by = None, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_table_row_count_to_equal( numberOfRecordExpected, group_by = None, filterCondition = None) -%}
       {%- set numberOfRecordExpected = numberOfRecordExpected-%}
       {%- set filterCondition = filterCondition-%}
       select * from (
-          select count(*) numberOfRecordActual  from {{tablename}}  
+          select count(*) numberOfRecordActual  from {{this}}  
               {%- if filterCondition %}
                   Where {{filterCondition}}
               {%- endif -%}
@@ -24,14 +22,13 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_table_row_count_to_equal_other_table(tablename, comparing_tableName, group_by_t1 = None, group_by_t2 = None,  filterCondition_t1 = None, filterCondition_t2 = None, factor = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_table_row_count_to_equal_other_table( comparing_tableName, group_by_t1 = None, group_by_t2 = None,  filterCondition_t1 = None, filterCondition_t2 = None, factor = None) -%}
       {%- set comparing_tableName = comparing_tableName-%}
       {%- set filterCondition_t1 = filterCondition_t1-%}
       {%- set filterCondition_t2 = filterCondition_t2-%}
       {%- set factor = factor-%}
       select * from (
-          select count(*) t1numberOfRecord  from {{tablename}}  
+          select count(*) t1numberOfRecord  from {{this}}  
               {%- if filterCondition_t1 %}
                   Where {{filterCondition_t1}}
               {%- endif -%}
@@ -52,24 +49,22 @@ macroString: |+
   {%- endmacro -%}
 
 
-  {%- macro expect_table_row_count_to_equal_other_table_times_factor(tablename, comparing_tableName,  group_by_t1 = None, group_by_t2 = None, filterCondition_t1 = None, filterCondition_t2 = None, factor = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_table_row_count_to_equal_other_table_times_factor( comparing_tableName,  group_by_t1 = None, group_by_t2 = None, filterCondition_t1 = None, filterCondition_t2 = None, factor = None) -%}
       {%- set comparing_tableName = comparing_tableName-%}
       {%- set filterCondition_t1 = filterCondition_t1-%}
       {%- set filterCondition_t2 = filterCondition_t2-%}
       {%- set factor = factor-%}
-      {{expect_table_row_count_to_equal_other_table(tablename, comparing_tableName, group_by_t1, group_by_t2, filterCondition_t1, filterCondition_t2, factor)}}
+      {{expect_table_row_count_to_equal_other_table( comparing_tableName, group_by_t1, group_by_t2, filterCondition_t1, filterCondition_t2, factor)}}
   {%- endmacro -%}
 
 
 
-  {%- macro expect_table_row_count_to_be_between(tablename, minValue , maxValue ,group_by = None, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_table_row_count_to_be_between( minValue , maxValue ,group_by = None, filterCondition = None) -%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
       {%- set filterCondition = filterCondition-%}
       select * from (
-          select count(*) numberOfRecordActual  from {{tablename}}  
+          select count(*) numberOfRecordActual  from {{this}}  
               {%- if filterCondition %}
                   Where {{filterCondition}}
               {%- endif -%}
@@ -81,8 +76,7 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_table_column_count_to_be_between(tablename, minValue , maxValue) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_table_column_count_to_be_between( minValue , maxValue) -%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
       {% set number_of_columns = columns | length %}
@@ -90,15 +84,14 @@ macroString: |+
       select '{{number_of_columns}}' where not {{number_of_columns}} between {{minValue}} and {{maxValue}}
   {%- endmacro %}
 
-  {%- macro expect_table_column_count_to_equal(tablename, ExpectedCount ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_table_column_count_to_equal( ExpectedCount ) -%}
       {%- set ExpectedCount = ExpectedCount-%}
       {% set number_of_columns = columns | length %}
 
       select '{{number_of_columns}}' where not {{number_of_columns}} = {{ExpectedCount}}
   {%- endmacro %}
 
-  {%- macro expect_table_columns_to_contain_set(tablename, ExpectedColumnList) -%}
+  {%- macro expect_table_columns_to_contain_set( ExpectedColumnList) -%}
       {%- set columnName = columns | map(attribute='name') | map('upper') | list -%}
       {%- set ExpectedColumnName = ExpectedColumnList | map('upper') | list -%}
       {%- set all_included = ExpectedColumnName | reject("in", columnName) | list -%}
@@ -107,7 +100,7 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_table_columns_to_not_contain_set(tablename, notExpectedColumnList) -%}
+  {%- macro expect_table_columns_to_not_contain_set( notExpectedColumnList) -%}
       {%- set columnName = columns | map(attribute='name') | map('upper') | list -%}
       {%- set notExpectedColumnName = notExpectedColumnList | map('upper') | list -%}
       {%- set all_included = notExpectedColumnName | select("in", columnName) | list -%}
@@ -115,7 +108,7 @@ macroString: |+
       select {{all_included}} where not {{result}} = 0
   {%- endmacro %}
 
-  {%- macro expect_table_columns_to_match_set(tablename, ExpectedColumnList) -%}
+  {%- macro expect_table_columns_to_match_set( ExpectedColumnList) -%}
       {%- set columnName = columns | map(attribute='name') | map('upper') | list -%}
       {%- set ExpectedColumnName = ExpectedColumnList | map('upper') | list -%}
       {%- set all_included = ExpectedColumnName | reject("in", columnName) | list -%}
@@ -125,15 +118,14 @@ macroString: |+
       select {{all_included}} where not ( {{result}} = 0 and {{numberOfColumnInTable}} = {{numberOfColumnInGivenList}})
   {%- endmacro %}
 
-  {%- macro expect_row_values_to_have_recent_data(tablename, columnName, datePart_, interval_, row_condition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_row_values_to_have_recent_data( columnName, datePart_, interval_, row_condition = None) -%}
       {%- set columnName = columnName-%}
       {%- set datePart1 = datePart_-%}
       {%- set interval1 = interval_-%}
       {%- set filterCondition = row_condition-%}
       
       select * from (
-          select count(*) numberOfRecordActual  from {{tablename}}  
+          select count(*) numberOfRecordActual  from {{this}}  
               {%- if filterCondition %}
                   Where {{filterCondition}}
               {%- endif -%}
@@ -141,13 +133,11 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_table_columns_to_be_same_as_other_table(tablename, comparing_tableName) -%}
-      {%- set tablename = tablename-%}
-      {% set tablename1 = tablename.strip('"') %}
-      {% set part1 = tablename1.split('.') %}
-      {% set table_catalog1 = part1[0].strip('"') %}
-      {% set table_schema1 = part1[1].strip('"') %}
-      {% set table_name1 = part1[2].strip('"') %}
+  {%- macro expect_table_columns_to_be_same_as_other_table( comparing_tableName) -%}
+      {% set srcSchName = node.location.name %}
+      {% set table_catalog1 = storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='database') | first %}
+      {% set table_schema1 = storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='schema') | first %}
+      {% set table_name1 = node.name %}
 
       {%- set comparing_tableName = comparing_tableName-%}
       {% set part2 = comparing_tableName.split('.') %}
@@ -188,15 +178,13 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_table_column_count_to_equal_other_table(tablename, comparing_tableName) -%}
-      {%- set tablename = tablename-%}
-      {% set tablename1 = tablename.strip('"') %}
-      {% set part1 = tablename1.split('.') %}
-      {% set table_catalog1 = part1[0].strip('"') %}
-      {% set table_schema1 = part1[1].strip('"') %}
-      {% set table_name1 = part1[2].strip('"') %}
+  {%- macro expect_table_column_count_to_equal_other_table( comparing_tableName) -%}
+      {% set srcSchName = node.location.name %}
+      {% set table_catalog1 = storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='database') | first %}
+      {% set table_schema1 = storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='schema') | first %}
+      {% set table_name1 = node.name %}
 
-      {%- set comparing_tableName = comparing_tableName-%}
+      {%- set comparing_tableName = comparing_tableName.replace('"', '')-%}
       {% set part2 = comparing_tableName.split('.') %}
       {% set table_catalog2 = part2[0] %}
       {% set table_schema2 = part2[1] %}
@@ -220,9 +208,7 @@ macroString: |+
 
   {%- endmacro %}
 
-
-  {%- macro expect_column_values_to_be_of_type(tablename, columnName, dataType) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_values_to_be_of_type( columnName, dataType) -%}
       {%- set columnName = columnName-%}
       {%- set dataType = dataType-%}
       {%- set columnDataType = columns | selectattr('name','equalto',columnName) | map(attribute='dataType') | first -%}
@@ -230,8 +216,7 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_values_to_be_in_type_list(tablename, columnName, dataType) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_values_to_be_in_type_list( columnName, dataType) -%}
       {%- set columnName = columnName-%}
       {%- set dataType = "('" + dataType | join("', '") + "')" -%}
 
@@ -240,25 +225,23 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_value_lengths_to_equal(tablename, columnName, rowsValueLength, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_value_lengths_to_equal( columnName, rowsValueLength, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set rowsValueLength = rowsValueLength-%}
 
-      SELECT * FROM {{tablename}} 
+      SELECT * FROM {{this}} 
       WHERE LENGTH("{{columnName}}") != {{rowsValueLength}}
               {%- if filterCondition %}
                   and {{filterCondition}}
               {%- endif -%}
   {%- endmacro %}
 
-  {%- macro expect_column_value_lengths_to_be_between(tablename, columnName, minLength, maxLength, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_value_lengths_to_be_between( columnName, minLength, maxLength, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set minLength = minLength-%}
       {%- set maxLength = maxLength-%}
 
-      SELECT * FROM {{tablename}} 
+      SELECT * FROM {{this}} 
       WHERE not LENGTH("{{columnName}}") between {{minLength}} and {{maxLength}}
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -267,22 +250,22 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_values_to_match_regex(tablename, columnName, regex, isRaw = False, flags='', filterCondition=None ) -%} 
-      SELECT * FROM {{ tablename }}
+  {%- macro expect_column_values_to_match_regex( columnName, regex, isRaw = False, flags='', filterCondition=None ) -%} 
+      SELECT * FROM {{ this }}
       WHERE {% if filterCondition %} {{ filterCondition }} AND {% endif %}
           regexp_instr("{{ columnName }}", {% if isRaw %}$$ {{ regex }} $$ {% else %}'{{ regex }}'{% endif %}, 1, 1, 0, '{{ flags }}' ) = 0 
   {%- endmacro %}
 
-  {%- macro expect_column_values_to_not_match_regex(tablename, columnName, regex, isRaw = False, flags='', filterCondition=None ) -%} 
-      SELECT * FROM {{ tablename }}
+  {%- macro expect_column_values_to_not_match_regex( columnName, regex, isRaw = False, flags='', filterCondition=None ) -%} 
+      SELECT * FROM {{ this }}
       WHERE  {% if filterCondition %} {{ filterCondition }} AND {% endif %}
           not regexp_instr("{{ columnName }}", {% if isRaw %}$$ {{ regex }} $$ {% else %}'{{ regex }}'{% endif %}, 1, 1, 0, '{{ flags }}' ) = 0 
   {%- endmacro %}
 
 
-  {%- macro expect_column_values_to_match_regex_list(tablename, columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None ) -%}
+  {%- macro expect_column_values_to_match_regex_list( columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None ) -%}
       
-      SELECT * FROM {{ tablename }}
+      SELECT * FROM {{ this }}
       WHERE {% if filterCondition %} {{ filterCondition }} AND {% endif %}  
 
           {%- for regex in regexList %}
@@ -295,8 +278,8 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_values_to_not_match_regex_list(tablename, columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None )-%} 
-      SELECT * FROM {{ tablename }}
+  {%- macro expect_column_values_to_not_match_regex_list( columnName, regexList, matchType='all', isRaw=False, flags='', filterCondition=None )-%} 
+      SELECT * FROM {{ this }}
       WHERE {% if filterCondition %} {{ filterCondition }} AND {% endif %}  
 
           {%- for regex in regexList %}
@@ -308,14 +291,13 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_distinct_count_to_be_greater_than(tablename, columnName, expextedCount, group_by = None, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_count_to_be_greater_than( columnName, expextedCount, group_by = None, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expextedCount = expextedCount-%}
 
       SELECT 1 FROM (
           SELECT COUNT(DISTINCT "{{columnName}}") AS distinctCount 
-          FROM {{tablename}}
+          FROM {{this}}
           {% if filterCondition %}
                   Where {{filterCondition}}
           {%- endif -%}
@@ -328,14 +310,13 @@ macroString: |+
       WHERE not countCheck.distinctCount > {{expextedCount}}
   {%- endmacro %}
 
-  {%- macro expect_column_distinct_count_to_be_less_than(tablename, columnName, expextedCount, group_by = None, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_count_to_be_less_than( columnName, expextedCount, group_by = None, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expextedCount = expextedCount-%}
 
       SELECT 1 FROM (
           SELECT COUNT(DISTINCT "{{columnName}}") AS distinctCount 
-          FROM {{tablename}}
+          FROM {{this}}
           {% if filterCondition %}
                   Where {{filterCondition}}
           {%- endif -%}
@@ -347,14 +328,13 @@ macroString: |+
       WHERE not countCheck.distinctCount < {{expextedCount}}
   {%- endmacro %}
 
-  {%- macro expect_column_distinct_count_to_equal(tablename, columnName, expextedCount, group_by = None, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_count_to_equal( columnName, expextedCount, group_by = None, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expextedCount = expextedCount-%}
 
       SELECT 1 FROM (
           SELECT COUNT(DISTINCT "{{columnName}}") AS distinctCount 
-          FROM {{tablename}}
+          FROM {{this}}
           {% if filterCondition %}
                   Where {{filterCondition}}
           {%- endif -%}
@@ -368,8 +348,7 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_distinct_count_to_equal_other_table(tablename, columnName, otherTableName, otherColumnName, filterCondition_t1 = None, filterCondition_t2 = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_count_to_equal_other_table( columnName, otherTableName, otherColumnName, filterCondition_t1 = None, filterCondition_t2 = None) -%}
       {%- set columnName = columnName-%}
       {%- set otherTableName = otherTableName-%}
       {%- set otherColumnName = otherColumnName-%}
@@ -377,7 +356,7 @@ macroString: |+
 
           SELECT 1 FROM (
               SELECT 
-                  (SELECT COUNT(DISTINCT "{{ columnName }}") FROM {{ tablename }}        
+                  (SELECT COUNT(DISTINCT "{{ columnName }}") FROM {{ this }}        
                   {% if filterCondition_t1 %}
                       where {{filterCondition_t1}}
                   {%- endif %}) 
@@ -393,12 +372,11 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_distinct_values_to_equal_set(tablename, columnName, expectedValueList, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_values_to_equal_set( columnName, expectedValueList, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expectedValueList = expectedValueList-%}
 
-      SELECT DISTINCT "{{ columnName }}" FROM {{ tablename }}
+      SELECT DISTINCT "{{ columnName }}" FROM {{ this }}
           WHERE "{{ columnName }}" NOT IN ('{{ expectedValueList | join("', '") }}')
           {% if filterCondition %}
                   and {{filterCondition}}
@@ -408,7 +386,7 @@ macroString: |+
 
           {% for value in expectedValueList %}
           SELECT '{{ value }}' AS {{ columnName }}
-          WHERE '{{ value }}' NOT IN (SELECT DISTINCT "{{ columnName }}" FROM {{ tablename }}   {% if filterCondition %}
+          WHERE '{{ value }}' NOT IN (SELECT DISTINCT "{{ columnName }}" FROM {{ this }}   {% if filterCondition %}
                   where {{filterCondition}}
           {%- endif -%}
   )
@@ -419,12 +397,11 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_distinct_values_to_be_in_set(tablename, columnName, expectedValueList, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_values_to_be_in_set( columnName, expectedValueList, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expectedValueList = expectedValueList-%}
 
-      SELECT DISTINCT "{{ columnName }}" FROM {{ tablename }}
+      SELECT DISTINCT "{{ columnName }}" FROM {{ this }}
           WHERE "{{ columnName }}" NOT IN ('{{ expectedValueList | join("', '") }}')
           {% if filterCondition %}
                   and {{filterCondition}}
@@ -433,14 +410,13 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_distinct_values_to_contain_set(tablename, columnName, expectedValueList, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_distinct_values_to_contain_set( columnName, expectedValueList, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expectedValueList = expectedValueList-%}
 
           {% for value in expectedValueList %}
           SELECT '{{ value }}' AS {{ columnName }}
-          WHERE '{{ value }}' NOT IN (SELECT DISTINCT "{{ columnName }}" FROM {{ tablename }})
+          WHERE '{{ value }}' NOT IN (SELECT DISTINCT "{{ columnName }}" FROM {{ this }})
           
           {% if not loop.last %}UNION ALL{% endif %}
           {% endfor %}
@@ -450,13 +426,12 @@ macroString: |+
 
   {%- endmacro %}
 
-  {%- macro expect_column_max_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_max_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -466,13 +441,12 @@ macroString: |+
           HAVING not MAX("{{ columnName }}") BETWEEN {{ minValue }} AND {{ maxValue }}
   {%- endmacro %}
 
-  {%- macro expect_column_mean_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_mean_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -483,13 +457,12 @@ macroString: |+
 
   {%- endmacro %}
 
-  {%- macro expect_column_median_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_median_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -500,13 +473,12 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_min_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_min_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -517,13 +489,12 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_sum_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_sum_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -533,13 +504,12 @@ macroString: |+
           HAVING not sum("{{ columnName }}") BETWEEN {{ minValue }} AND {{ maxValue }}
   {%- endmacro %}
 
-  {%- macro expect_column_unique_value_count_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_unique_value_count_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -549,13 +519,12 @@ macroString: |+
           HAVING not count(distinct "{{ columnName }}") BETWEEN {{ minValue }} AND {{ maxValue }}
   {%- endmacro %}
 
-  {%- macro expect_column_stdev_to_be_between(tablename, columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_stdev_to_be_between( columnName, minValue, maxValue, filterCondition = None, group_by = None ) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -566,13 +535,12 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_proportion_of_unique_values_to_be_between(tablename, columnName, minValue, maxValue,  filterCondition = None, group_by = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_proportion_of_unique_values_to_be_between( columnName, minValue, maxValue,  filterCondition = None, group_by = None) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -584,14 +552,13 @@ macroString: |+
 
 
 
-  {%- macro expect_column_quantile_values_to_be_between(tablename, columnName, quantile, minValue , maxValue, filterCondition = None, group_by = None  ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_quantile_values_to_be_between( columnName, quantile, minValue , maxValue, filterCondition = None, group_by = None  ) -%}
       {%- set columnName = columnName-%}
       {%- set quantile = quantile-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               {%- if filterCondition %}
                   where {{filterCondition}}
               {%- endif -%}
@@ -603,12 +570,11 @@ macroString: |+
 
 
 
-  {%- macro expect_column_values_to_be_in_set(tablename, columnName, expectedValueList, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_values_to_be_in_set( columnName, expectedValueList, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expectedValueList = expectedValueList-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
           WHERE "{{ columnName }}" NOT IN ('{{ expectedValueList | join("', '") }}')
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -617,12 +583,11 @@ macroString: |+
   {%- endmacro %}
 
 
-  {%- macro expect_column_values_to_not_be_in_set(tablename, columnName, expectedValueList, filterCondition = None) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_values_to_not_be_in_set( columnName, expectedValueList, filterCondition = None) -%}
       {%- set columnName = columnName-%}
       {%- set expectedValueList = expectedValueList-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
           WHERE NOT "{{ columnName }}" NOT IN ('{{ expectedValueList | join("', '") }}')
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -630,20 +595,19 @@ macroString: |+
 
   {%- endmacro %}
 
-  {%- macro expect_column_values_to_be_between(tablename, columnName, minValue , maxValue, filterCondition = None ) -%}
-      {%- set tablename = tablename-%}
+  {%- macro expect_column_values_to_be_between( columnName, minValue , maxValue, filterCondition = None ) -%}
       {%- set columnName = columnName-%}
       {%- set minValue = minValue-%}
       {%- set maxValue = maxValue-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
           where not "{{ columnName }}" BETWEEN {{ minValue }} AND {{ maxValue }}
               {%- if filterCondition %}
                   and  {{filterCondition}}
               {%- endif -%}
   {%- endmacro %}
 
-  {% macro expect_column_values_to_be_decreasing(model, column_name,sort_column=None,strictly=True,filterCondition=None,group_by=None,step=None) %}
+  {% macro expect_column_values_to_be_decreasing( column_name,sort_column=None,strictly=True,filterCondition=None,group_by=None,step=None) %}
           {%- set sort_column = column_name if not sort_column else sort_column -%}
           {%- set operator = "<" if strictly else "<=" -%}
 
@@ -654,7 +618,7 @@ macroString: |+
                   "{{ group_by | join('", "') }}",
                   {%- endif %}
                   "{{ column_name }}" as value_field
-              from {{ model }}
+              from {{ this }}
               {% if filterCondition %}
               where {{ filterCondition }}
               {% endif %}
@@ -695,7 +659,7 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_values_to_be_increasing(tablename, column_name,sort_column=None,strictly=True,filterCondition=None,group_by=None,step=None) %}
+  {% macro expect_column_values_to_be_increasing( column_name,sort_column=None,strictly=True,filterCondition=None,group_by=None,step=None) %}
 
           {%- set sort_column = column_name if not sort_column else sort_column -%}
           {%- set operator = ">" if strictly else ">=" -%}
@@ -707,7 +671,7 @@ macroString: |+
                   "{{ group_by | join('", "') }}",
                   {%- endif %}
                   "{{ column_name }}" as value_field
-              from {{ tablename }}
+              from {{ this }}
               {% if filterCondition %}
               where {{ filterCondition }}
               {% endif %}
@@ -749,13 +713,12 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_values_to_match_like_pattern(tablename, columnName, pattern, filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_values_to_match_like_pattern( columnName, pattern, filterCondition = None) %}
       {%- set columnName = columnName-%}
       {%- set pattern = pattern-%}
 
           SELECT 1
-          FROM {{ tablename }}
+          FROM {{ this }}
           WHERE "{{ columnName }}" NOT LIKE '{{ pattern }}'
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -764,12 +727,11 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_values_to_not_match_like_pattern(tablename, columnName, pattern, filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_values_to_not_match_like_pattern( columnName, pattern, filterCondition = None) %}
       {%- set columnName = columnName-%}
       {%- set pattern = pattern-%}
 
-          SELECT 1 FROM {{ tablename }}
+          SELECT 1 FROM {{ this }}
           WHERE "{{ columnName }}" LIKE '{{ pattern }}'
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -777,13 +739,12 @@ macroString: |+
           
   {% endmacro %}
 
-  {% macro expect_column_values_to_match_like_pattern_list(tablename, columnName, patternList, matchType='any', filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_values_to_match_like_pattern_list( columnName, patternList, matchType='any', filterCondition = None) %}
       {%- set columnName = columnName-%}
       {%- set patternList = patternList-%}
       {%- set matchType = matchType-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               WHERE not ({% for pattern in patternList %}
                          {{ columnName }} LIKE '{{ pattern }}'
                           {%- if not loop.last %}
@@ -796,13 +757,12 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_values_to_not_match_like_pattern_list(tablename, columnName, patternList, matchType='any', filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_values_to_not_match_like_pattern_list( columnName, patternList, matchType='any', filterCondition = None) %}
       {%- set columnName = columnName-%}
       {%- set patternList = patternList-%}
       {%- set matchType = matchType-%}
 
-      SELECT 1 FROM {{ tablename }}
+      SELECT 1 FROM {{ this }}
               WHERE  ({% for pattern in patternList %}
                          {{ columnName }} LIKE '{{ pattern }}'
                           {%- if not loop.last %}
@@ -815,14 +775,13 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_pair_values_A_to_be_greater_than_B(tablename, columnNameA, columnNameB, orEqualTo = FALSE, filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_pair_values_A_to_be_greater_than_B( columnNameA, columnNameB, orEqualTo = FALSE, filterCondition = None) %}
       {%- set columnNameA = columnNameA-%}
       {%- set columnNameB = columnNameB-%}
       {% set operator = ">=" if orEqualTo else ">" %}
 
           SELECT 1
-          FROM {{ tablename }}
+          FROM {{ this }}
           WHERE not {{ columnNameA }} {{operator}} {{ columnNameB }}
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -830,13 +789,12 @@ macroString: |+
 
   {% endmacro %}                       
 
-  {% macro expect_column_pair_values_to_be_equal(tablename, columnNameA, columnNameB, filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_pair_values_to_be_equal( columnNameA, columnNameB, filterCondition = None) %}
       {%- set columnNameA = columnNameA-%}
       {%- set columnNameB = columnNameB-%}
 
           SELECT 1
-          FROM {{ tablename }}
+          FROM {{ this }}
           WHERE not {{ columnNameA }} = {{ columnNameB }}
               {%- if filterCondition %}
                   and {{filterCondition}}
@@ -845,14 +803,13 @@ macroString: |+
   {% endmacro %}     
 
 
-  {% macro expect_column_pair_values_to_be_in_set(tablename, columnNameA, columnNameB, validPairs, filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_column_pair_values_to_be_in_set( columnNameA, columnNameB, validPairs, filterCondition = None) %}
       {%- set columnNameA = columnNameA-%}
       {%- set columnNameB = columnNameB-%}
       {%- set validPairs = validPairs-%}
 
           SELECT 1
-          FROM {{ tablename }}
+          FROM {{ this }}
           WHERE ({% for pair in validPairs %}
                      ("{{ columnNameA }}", "{{ columnNameB }}") = ({{ pair[0] }}, {{ pair[1] }})
                      {% if not loop.last %} OR {% endif %}
@@ -866,13 +823,12 @@ macroString: |+
 
 
 
-  {% macro expect_compound_columns_to_be_unique(tablename, columnNames, filterCondition = None) %}
-      {%- set tablename = tablename-%}
+  {% macro expect_compound_columns_to_be_unique( columnNames, filterCondition = None) %}
       {%- set columnNames = columnNames-%}
       {%- set filterCondition = filterCondition-%}
 
        select  count(*) as noOfRecords
-      from {{ tablename }}
+      from {{ this }}
       where 1=1
       {% if filterCondition %}
           and {{ filterCondition }}
@@ -887,7 +843,7 @@ macroString: |+
 
 
 
-  {% macro expect_multicolumn_sum_to_equal(tablename, column_list, sum_total, group_by=None, filterCondition=None) %}
+  {% macro expect_multicolumn_sum_to_equal( column_list, sum_total, group_by=None, filterCondition=None) %}
 
       {%- set sum_expression = [] -%}
       {%- for column in column_list -%}
@@ -920,7 +876,7 @@ macroString: |+
               {%- if group_by -%}
               , {{ group_by_clause }}
               {%- endif %}
-          FROM {{ tablename }}
+          FROM {{ this }}
           {{ row_condition_clause }}
           {%- if group_by -%}
           GROUP BY {{ group_by_clause }}
@@ -932,7 +888,7 @@ macroString: |+
 
 
 
-  {% macro expect_select_column_values_to_be_unique_within_record(tablename, column_list, filterCondition=None) %}
+  {% macro expect_select_column_values_to_be_unique_within_record( column_list, filterCondition=None) %}
 
   WITH column_values AS (
       SELECT
@@ -940,7 +896,7 @@ macroString: |+
           {% for column in column_list %}
           "{{ column }}"{% if not loop.last %}, {% endif %}
           {% endfor %}
-      FROM {{ tablename }}
+      FROM {{ this }}
       WHERE 1=1
       {% if filterCondition %}
           AND {{ filterCondition }}
@@ -970,7 +926,7 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_values_to_be_within_n_stdevs(tablename, column_name, group_by=None, sigma_threshold=3) %}
+  {% macro expect_column_values_to_be_within_n_stdevs( column_name, group_by=None, sigma_threshold=3) %}
       WITH metric_values AS (
           SELECT
               {% if group_by %}
@@ -979,7 +935,7 @@ macroString: |+
               "{{ column_name }}",
               AVG("{{ column_name }}") OVER() AS column_avg,
               STDDEV("{{ column_name }}") OVER() AS column_stddev
-          FROM {{ tablename }}
+          FROM {{ this }}
       ),
       z_scores AS (
           SELECT
@@ -994,7 +950,6 @@ macroString: |+
 
 
   {% macro expect_column_values_to_be_within_n_moving_stdevs(
-      model, 
       column_name, 
       date_column_name, 
       group_by=None, 
@@ -1020,7 +975,7 @@ macroString: |+
                   {{ group_by | join(", ") }},
               {% endif %}
               SUM("{{ column_name }}") AS agg_metric_value
-          FROM {{ model }}
+          FROM {{ this }}
           GROUP BY 
               DATE_TRUNC({{period}}, {{date_column_name}}) {% if group_by %}, {{ group_by | join(", ") }}{% endif %}
       )
@@ -1091,12 +1046,12 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_row_values_to_have_recent_data(model, column_name, datePart1, interval, row_condition = None) %}
+  {% macro expect_row_values_to_have_recent_data( column_name, datePart1, interval, row_condition = None) %}
   {%- set default_start_date = '1970-01-01' -%}
 
       with max_recency as (
           select max("{{ column_name }}") as max_timestamp
-          from {{ model }}
+          from {{ this }}
           where "{{ column_name }}" <= CURRENT_TIMESTAMP()
               {% if row_condition %}
               and {{ row_condition }}
@@ -1109,7 +1064,6 @@ macroString: |+
 
 
   {% macro expect_table_aggregation_to_equal_other_table(
-      model,
       expression,
       compare_model,
       compare_expression=None,
@@ -1131,7 +1085,7 @@ macroString: |+
               {% endif %}
               {{ expression_1 }} as agg_expr
           from
-              {{ model }}
+              {{ this }}
           {% if row_condition %}
           where {{ row_condition }}
           {% endif %}
@@ -1178,11 +1132,11 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_row_values_to_have_recent_data( model, column_name, datepart,interval,row_condition=None,default_start_date='1970-01-01') %}
+  {% macro expect_row_values_to_have_recent_data(  column_name, datepart,interval,row_condition=None,default_start_date='1970-01-01') %}
       {%- set default_start_date = default_start_date -%}
       with max_recency as (
           select  max("{{ column_name }}") as max_timestamp
-          from  {{ model }}
+          from  {{ this }}
           where  "{{ column_name }}"  <= CURRENT_TIMESTAMP()
               {%- if row_condition -%}
               and {{ row_condition }}
@@ -1193,7 +1147,7 @@ macroString: |+
   {%- endmacro -%}
 
 
-  {% macro expect_grouped_row_values_to_have_recent_data(tablename,group_by,timestamp_column,datepart,interval,filterCondition=None ) %}
+  {% macro expect_grouped_row_values_to_have_recent_data(group_by,timestamp_column,datepart,interval,filterCondition=None ) %}
   with latest_grouped_timestamps as (
       select
           {% if group_by %}
@@ -1202,7 +1156,7 @@ macroString: |+
           1 as join_key,
           max(cast("{{ timestamp_column }}" as timestamp)) as latest_timestamp_column
       from
-          {{ tablename }}
+          {{ this }}
       where
           -- exclude erroneous future dates
           cast("{{ timestamp_column }}" as timestamp) <= current_timestamp()
@@ -1233,14 +1187,12 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_table_columns_to_match_ordered_list(tablename, column_list, transform="UPPER") %}
+  {% macro expect_table_columns_to_match_ordered_list( column_list, transform="UPPER") %}
 
-      {%- set tablename = tablename-%}
-      {%- set tablename1 = tablename.strip('"') -%}
-      {%- set part1 = tablename1.split('.') -%}
-      {%- set table_catalog1 = part1[0].strip('"') -%}
-      {%- set table_schema1 = part1[1].strip('"') -%}
-      {%- set table_name1 = part1[2].strip('"') -%}
+      {% set srcSchName = node.location.name %}
+      {% set table_catalog1 = storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='database') | first %}
+      {% set table_schema1 = storageLocations | selectattr('name', 'equalto', srcSchName) | map(attribute='schema') | first %}
+      {% set table_name1 = node.name %}
 
       with relation_columns as (
           select
@@ -1276,13 +1228,13 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_values_to_have_consistent_casing(tablename, column_name, display_inconsistent_columns=False) %}
+  {% macro expect_column_values_to_have_consistent_casing( column_name, display_inconsistent_columns=False) %}
   with test_data as (
 
       select
           distinct "{{ column_name }}" as distinct_values
       from
-          {{ tablename }}
+          {{ this }}
 
   ),
   {% if display_inconsistent_columns %}
@@ -1322,7 +1274,7 @@ macroString: |+
   {% endmacro %}
 
 
-  {% macro expect_column_most_common_value_to_be_in_set(tablename, column_name, value_set, top_n, quote_values=True, data_type="STRING", filterCondition=None) %}
+  {% macro expect_column_most_common_value_to_be_in_set( column_name, value_set, top_n, quote_values=True, data_type="STRING", filterCondition=None) %}
           with value_counts as (
               select
                   {% if quote_values -%}
@@ -1331,7 +1283,7 @@ macroString: |+
                   cast( "{{ column_name }}" as {{ data_type }})
                   {%- endif %} as value_field,
                   count(*) as value_count
-              from {{ tablename }}
+              from {{ this }}
               {% if filterCondition %}
               where {{ filterCondition }}
               {% endif %}

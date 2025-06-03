@@ -1,6 +1,6 @@
 fileVersion: 1
 id: a19524c4-85ff-4b0a-b350-1abc175bb570
-name: STG_ACCOUNT_HISTORY
+name: TEST_TABLE
 operation:
   config:
     insertStrategy: INSERT
@@ -156,7 +156,7 @@ operation:
           - columnReferences:
               - columnCounter: f5f0c22b-d347-4d90-9b58-bc56a5c33d1f
                 stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
-            transform: "{{even_odd('\"ACCOUNT_HISTORY\".\"id_hash\"')}}"
+            transform: ""
       - appliedColumnTests: {}
         columnReference:
           columnCounter: f3a3591a-7c6a-4eff-ae39-56ca8e226acc
@@ -392,9 +392,9 @@ operation:
             nodeName: ACCOUNT_HISTORY
         join:
           joinCondition: FROM {{ ref('SOURCE', 'ACCOUNT_HISTORY') }} "ACCOUNT_HISTORY"
-        name: STG_ACCOUNT_HISTORY
+        name: TEST_TABLE
         noLinkRefs: []
-  name: STG_ACCOUNT_HISTORY
+  name: TEST_TABLE
   overrideSQL: false
   schema: ""
   sqlType: Stage
