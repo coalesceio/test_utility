@@ -48,7 +48,8 @@ Step 6: In the text field, call the macro using the package import alias followe
         
 _For Example, I am trying to Run Test case, 'expect_table_row_count_to_be_between' from the avilable test below._
         
-![image](https://github.com/user-attachments/assets/29febbe9-ffe4-446a-8c1c-00cd0c438d1e)
+![image](https://github.com/user-attachments/assets/4c546eb2-7b66-4e41-b514-99da676993a6)
+
 
 
 Step 7: Replace the input parameters in macro call as per requirment.
