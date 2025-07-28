@@ -1078,6 +1078,21 @@ macroString: |+
       {%- set expression_1 = expression %}
       {%- set expression_2 = compare_expression if compare_expression else expression %}
 
+      {#- If group_by is a string of comma-separated values, parse it into a list -#}
+      {%- if group_by and group_by is string -%}
+          {%- set group_by = group_by.replace('"', '').split(',') | map('trim') | list -%}
+      {%- endif -%}
+
+      {#- Default compare_group_by to group_by if not provided -#}
+      {%- if compare_group_by is none -%}
+          {%- set compare_group_by = group_by -%}
+      {%- endif -%}
+
+      {#- If compare_group_by is a string, parse it as well -#}
+      {%- if compare_group_by and compare_group_by is string -%}
+          {%- set compare_group_by = compare_group_by.replace('"', '').split(',') | map('trim') | list -%}
+      {%- endif -%}
+
       with aggregated_model as (
           select
               {% if group_by %}
@@ -1090,13 +1105,13 @@ macroString: |+
           where {{ row_condition }}
           {% endif %}
           {% if group_by %}
-          group by "{{ group_by | join('","') }}"
+          group by "{{ group_by | join('", "') }}"
           {% endif %}
       ),
       aggregated_compare_model as (
           select
               {% if compare_group_by %}
-              "{{ compare_group_by | join('","') }}",
+              "{{ compare_group_by | join('", "') }}",
               {% endif %}
               {{ expression_2 }} as compare_agg_expr
           from
@@ -1114,23 +1129,22 @@ macroString: |+
           abs(a.agg_expr - b.compare_agg_expr) as diff,
           case
           {% if tolerance_percent %}
-              when {{tolerance_percent}} is not null then
-                  abs(a.agg_expr - b.compare_agg_expr) / nullif(a.agg_expr, 0) * 100 <= {{tolerance_percent}}
+              when {{ tolerance_percent }} is not null then
+                  abs(a.agg_expr - b.compare_agg_expr) / nullif(a.agg_expr, 0) * 100 <= {{ tolerance_percent }}
           {% endif %}
-              when {{tolerance}} is not null then
-                  abs(a.agg_expr - b.compare_agg_expr) <= {{tolerance}}
+              when {{ tolerance }} is not null then
+                  abs(a.agg_expr - b.compare_agg_expr) <= {{ tolerance }}
               else
                   abs(a.agg_expr - b.compare_agg_expr) = 0
           end as is_equal
       from
           aggregated_model a
           join aggregated_compare_model b
-          on {% if group_by %} a.{{ group_by[0] }} = b.{{ compare_group_by[0] }} {% else %} true {% endif %}
+          on {% if group_by %} a."{{ group_by[0] }}" = b."{{ compare_group_by[0] }}" {% else %} true {% endif %}
       where
           not is_equal
 
   {% endmacro %}
-
 
   {% macro expect_row_values_to_have_recent_data(  column_name, datepart,interval,row_condition=None,default_start_date='1970-01-01') %}
       {%- set default_start_date = default_start_date -%}
@@ -1367,134 +1381,6 @@ macroString: |+
       on dr.dt = tab.dt
       where nvl(tab.cnt, 0) = 0
   {%- endmacro %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 name: macro
 type: Macro

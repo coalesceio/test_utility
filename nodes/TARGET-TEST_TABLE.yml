@@ -15,7 +15,12 @@ operation:
   locationName: TARGET
   materializationType: table
   metadata:
-    appliedNodeTests: []
+    appliedNodeTests:
+      - continueOnFailure: true
+        description: ""
+        name: Test
+        runOrder: Before
+        templateString: "{{test_missing_dates(\"First_visit\", \"2018-01-01\", \"2025-01-01\" ) }}"
     columns:
       - appliedColumnTests: {}
         columnReference:

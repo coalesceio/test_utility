@@ -16,11 +16,11 @@ operation:
   materializationType: table
   metadata:
     appliedNodeTests:
-      - continueOnFailure: false
+      - continueOnFailure: true
         description: ""
         name: Test
         runOrder: Before
-        templateString: "{{ expect_table_column_count_to_be_between(4,5) }}"
+        templateString: "{{ expect_table_aggregation_to_equal_other_table1('sum(\"account_id\")', ref('SOURCE', 'ACCOUNT_HISTORY'), 'sum(\"account_id\")','\"agent_name\",\"last_visit\"','\"agent_name\",\"last_visit\"' ) }}"
     columns:
       - appliedColumnTests: {}
         columnReference:
@@ -34,6 +34,40 @@ operation:
         sourceColumnReferences:
           - columnReferences:
               - columnCounter: dd1768ae-e9a8-4088-83f2-e08e7c0ea16b
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - acceptedValues:
+          strictMatch: false
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: 4b9ca440-56a4-4380-8226-03652b47e2a9
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: VARCHAR(16777216)
+        description: ""
+        name: agent_name
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: 2936149b-885a-442b-b6e3-d01a3287b71b
+                stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
+            transform: ""
+      - acceptedValues:
+          strictMatch: false
+          values: []
+        appliedColumnTests: {}
+        columnReference:
+          columnCounter: e6da708c-02e6-4416-b920-c23c2a5f0fae
+          stepCounter: 505ce17e-fdfb-4de5-a817-ab1f3a33fa6c
+        config: {}
+        dataType: TIMESTAMP_NTZ(9)
+        description: ""
+        name: last_visit
+        nullable: true
+        sourceColumnReferences:
+          - columnReferences:
+              - columnCounter: fab1c62d-f1c5-429f-af47-2b30f3cd103e
                 stepCounter: 98cf5b6e-bee1-4e6c-931a-1d985d31e4d1
             transform: ""
     cteString: ""
